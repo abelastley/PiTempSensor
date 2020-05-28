@@ -1,0 +1,3 @@
+# Ignore the CSV output file
+*.csv
+
