@@ -19,20 +19,18 @@ print("found %s sensors" %numSensors)
 
 # if the data file does not exist, initialize it
 if(path.exists(temperature_data_file) != True):
-    print("file does not exist")
-    outputFile = open(temperature_data_file, "w")
-    outputFile.write("%s," %deg_f)
-    outputFile.close()
-
+    print("Output file does not exist. Creating new one...\r\n")
+    try:
+        outputFile = open(temperature_data_file, "w")
+        outputFile.write("Date and Time,")
+        for n in range(0, numSensors):
+            outputFile.write("Sensor %s Reading (degrees F)," %n)
+        outputFile.write("\r\n")
+        outputFile.close()
+    except:
+        print "Error occurred while creating or writing to file: " + temperature_data_file, sys.exc_info[0]
 else:
-    print("file exists")
-    currentDate = datetime.now().date()
-    currentTime = datetime.now().time()
-#    print("now =", now)
-#    print ("type(now) =", type(now))
-    date_object = datetime.strftime(currentDate, "%d %B, %Y")
-    print ("dateobject =", date_object)
-
+    print("Output file exists. Appending new data to it...\r\n")
 
 
 
@@ -55,16 +53,22 @@ def read_temp(sensorIndex):
         return temp_c, temp_f
 
 def read_temps_and_write_file():
-    outputFile = open(temperature_data_file, "a")
-    
-    for n in range(0, numSensors):
-        deg_c, deg_f = read_temp(n)
-        print("Sensor %s" %n)
-        print("temperature %s" %deg_f)
-        outputFile.write("%s," %deg_f)
-    
-    outputFile.write("\r\n")
-    outputFile.close()
+    try:
+        outputFile = open(temperature_data_file, "a")
+        now = datetime.now()
+        dateTimeString = datetime.strftime(now, "%m/%d/%Y %H:%M:%S")
+        outputFile.write(dateTimeString + ",")
+        
+        for n in range(0, numSensors):
+            deg_c, deg_f = read_temp(n)
+            print("Sensor %s" %n)
+            print("temperature %s" %deg_f)
+            outputFile.write("%s," %deg_f)
+        
+        outputFile.write("\r\n")
+        outputFile.close()
+    except:
+        print "Error occurred while appending to file: " + temperature_data_file, sys.exc_info[0]
 
 
 
@@ -79,9 +83,9 @@ def read_temps_and_write_file():
 # until it is killed.
 
 
-while True:
-    read_temps_and_write_file()    
-    time.sleep(intervalTime)
+#while True:
+#    read_temps_and_write_file()    
+#    time.sleep(intervalTime)
 
 #########################################################################
 
