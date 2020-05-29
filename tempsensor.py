@@ -6,7 +6,7 @@ from datetime import datetime
 
 # TODO: configure the following parameters
 temperature_data_file = "./TemperatureData.csv"
-intervalTime = 5 # seconds
+intervalTime = 60 # Time in seconds. Not applicable if using cron.
 
 
 
