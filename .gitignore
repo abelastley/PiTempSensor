@@ -1,3 +1,5 @@
 # Ignore the CSV output file
 *.csv
 
+# Ignore the docx readme file
+*.docx
